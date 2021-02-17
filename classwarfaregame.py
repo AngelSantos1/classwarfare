@@ -8,20 +8,27 @@ class Character:
 		
 	
 class Room:
-	def	__init__(self, doors, items, npcs, description):
+	def	__init__(self, doors, items, monsters, description):
 		self.doors = doors
 		self.description = description
 		self.items = items
-		self.npcs = npcs
+		self.monsters = monsters
 				 
 class Item:
 	def __init__(self, description):
 		self.description = description
 
-class Npc:
-	def __init__(self, name, description, slain):
+class Monster:
+	def __init__(self, description):
 		self.description = description
-		self.slain = slain
+
+"""
+
+	def generate(self, roomindex):
+		Character("Steve")
+
+"""	
+	
 #Is Npc name redundant? Did not use names for Items. Should Npcs be a dictionary?
  
 
@@ -31,16 +38,18 @@ inputtext = input("What's your character's name? ")
 player = Character(inputtext, 0, [])
 print("Your character's name is", inputtext)
 
-items =  { 
+itemtype =  { 
 	"Rusty Spoon": Item("A Rusty Spoon. A capable and efficient tool for the working class cannibal!")
 }
 
-npcs = Npc("A Hapless Manatee", "A defenseless beast. Incapable - weak.. Most easy prey for the wroth of the most roitous Patroit!", "Beaten and battered! The beast flees before your might!")
+monstertype = { 
+	"A Hapless Manatee": Monster("A defenseless beast. Incapable - weak.. Most easy prey for the wroth of the most roitous Patroit!")
+}
 
-
+#"Beaten and battered! The beast flees before your might!"
 
 rooms = [
-	Room({"Forward":1}, ["Rusty Spoon"], ["A Hapless Manatee"],
+	Room({"Forward":1}, ["Rusty Spoon"], ["Manatee", "Manatee"],
 
 "You find yourself in a rectangular undulating moist room. A large neon sign infront of you is stapled to the organic pulsating walls reads: 'Welcome to the Jungle, baby!'"
 
@@ -51,10 +60,11 @@ rooms = [
 ]  
 
 while True:
+	print("")
 	print(rooms[player.roomindex].description)
 	print(list(rooms[player.roomindex].doors.keys()))
 	print(rooms[player.roomindex].items)
-	print(rooms[player.roomindex].npcs)
+	print(rooms[player.roomindex].monsters)
 	
 
 	resolved = False 
@@ -91,26 +101,22 @@ while True:
 				print(list(rooms[player.roomindex].items))
 		elif cmd == "list": 
 			for itemname in player.inventory:
-				print(items[itemname].description)
+				print(itemtype[itemname].description)
 		elif cmd == "greet":
-			for npcname in rooms[player.roomindex].npcs:
-				print(npcname)
-				print(npcs.description)
+			if sel in rooms[player.roomindex].monsters:
+				print(sel)
+				print(monstertype[sel].description)
 		elif cmd == "slay":
-			#for npcname in rooms[player.roomindex].npcs:
-			if sel in rooms[player.roomindex].npcs:
-					rooms[player.roomindex].npcs.remove(sel)
-					print(npcname)
-					print(npcs.slain)
+			if sel in rooms[player.roomindex].monsters:
+					rooms[player.roomindex].monsters.remove(sel)
 					resolved = True
 			else:
 				print("What or whom shall meet your fury??!") 
-				print(list(rooms[player.roomindex].npcs))
+				print(list(rooms[player.roomindex].monsters))
 				print("???")
 								
-					
-	#print(npcs[npcname].description)
-#				print(npcs[player.roomindex].npcs.description)
+# 		print(npcs[npcname].description)
+#			print(npcs[player.roomindex].npcs.description)
 			
 			# itemname is our Rusty Spoon
 			# items is our dictionary of item definitions
@@ -128,8 +134,12 @@ while True:
 			print("Huh???")
 
 # Homework
-# Drop the Rusty Spoon
-# Bonus put NPCs into rooms 
+# When player enters a room give a monster a chance to move into a random direction or X door. "Inform the player." 
+# Careful of DOOM room
+# Not capital 
+# More rooms 
+# Multiple doors 
+# Monster that takes your items
 
 
 
